@@ -1,29 +1,38 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
+    <input v-model="disabled" type="checkbox" />
+    <load-file :disabled="disabled" accept="image/*" @change="change"></load-file>
+    <load-image :disabled="disabled" @change="change"></load-image>
+
+    <img v-if="src" :src="src" width="500px" />
   </div>
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import HelloWorld from "./components/HelloWorld.vue";
+import { defineComponent, ref } from '@vue/composition-api'
+import loadFile from './components/loadFile.vue'
+import { getImage } from 'html-load-image'
+import loadImage from './components/loadImage.vue'
 
-export default Vue.extend({
-  name: "App",
+export default defineComponent({
+  name: 'App',
   components: {
-    HelloWorld,
+    loadFile,
+    loadImage,
   },
-});
-</script>
+  setup() {
+    const disabled = ref(false)
+    const src = ref<string | null>(null)
 
-<style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
+    const change = async (event: Event) => {
+      src.value = await getImage(event)
+    }
+
+    return {
+      disabled,
+      src,
+      change,
+    }
+  },
+})
+</script>
