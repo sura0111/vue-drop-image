@@ -1,13 +1,14 @@
 {
   "name": "vue-drop-image",
   "version": "0.1.0",
-  "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "build:lib": "vue-cli-service build --target lib ./src/components/index.ts",
-    "build:type": "tsc -P tsconfig.lib.json"
+    "build:type": "tsc -P tsconfig.lib.json",
+    "prepublishOnly": "yarn build:lib && yarn build:type && yarn release",
+    "release": "standard-version && git push --follow-tags origin main"
   },
   "main": "dist/vue-drop-image.common.js",
   "typings": "dist/types/index.d.ts",
@@ -35,6 +36,7 @@
     "prettier": "^2.2.1",
     "sass": "~1.32.0",
     "sass-loader": "^10.0.0",
+    "standard-version": "^9.3.2",
     "typescript": "~4.1.5",
     "vue-cli-plugin-vuetify": "~2.4.5",
     "vue-template-compiler": "^2.6.11",
