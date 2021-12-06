@@ -1,39 +1,35 @@
 <template>
   <div id="app">
-    <load-file :disabled="disabled" :accept="accept" :multiple="multiple" @change="change">
-      <template #activator="{ on, attrs }">
+    <drop-file :disabled="disabled" @drop="change">
+      <template #activator="{ attrs, dragging }">
         <slot
           name="activator"
-          :on="on"
           :attrs="{ ...attrs, disabled: uploading || loading || disabled, loading: uploading || loading }"
+          :dragging="dragging"
           :disabled="uploading || loading || disabled"
           :loading="uploading || loading"
         >
-          <button v-bind="attrs" :disabled="uploading || loading || disabled" v-on="on">Read Image</button>
+          DROP HERE
         </slot>
       </template>
-    </load-file>
+    </drop-file>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent, PropType, ref } from '@vue/composition-api'
-import LoadFile from './loadFile.vue'
 import { getImage, getImages } from 'html-load-image'
+import DropFile from './dropFile.vue'
 
 export default defineComponent({
-  name: 'LoadImage',
+  name: 'DropImage',
   components: {
-    LoadFile,
+    DropFile,
   },
   props: {
     value: {
       type: [String, Array] as PropType<string | string[]>,
       default: null,
-    },
-    accept: {
-      type: String,
-      default: 'image/*',
     },
     multiple: {
       type: Boolean,
@@ -55,7 +51,7 @@ export default defineComponent({
   setup(props, { emit }) {
     const loading = ref(false)
 
-    const change = async (event: Event) => {
+    const change = async (event: DragEvent) => {
       loading.value = true
       const input = props.multiple ? await getImages(event) : await getImage(event)
       emit('input', input)

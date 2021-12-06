@@ -1,3 +1,4 @@
+/** @type import('eslint').Linter.Config */
 module.exports = {
   root: true,
   env: {
@@ -13,6 +14,7 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 2020,
   },
+  ignorePatterns: ['dist'],
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',

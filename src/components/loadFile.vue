@@ -1,7 +1,7 @@
 <template>
   <div>
-    <slot :read="read">
-      <button :disabled="disabled" aria-label="Read File" @click.stop="read">Read File</button>
+    <slot name="activator" :on="{ click }" :attrs="{ disabled }" :disabled="disabled">
+      <button :disabled="disabled" aria-label="Read File" @click.stop="click">Read File</button>
     </slot>
     <input
       ref="fileReader"
@@ -18,6 +18,7 @@
 import { defineComponent } from '@vue/composition-api'
 
 export default defineComponent({
+  name: 'LoadFile',
   props: {
     accept: {
       type: String,
@@ -45,7 +46,7 @@ export default defineComponent({
     }
   },
   methods: {
-    read() {
+    click() {
       if (!this.disabled) (this.$refs.fileReader as HTMLElement).click()
     },
   },
