@@ -17,11 +17,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType, ref } from '@vue/composition-api'
+import Vue, { PropType } from 'vue'
 import LoadFile from './loadFile.vue'
 import { getImage, getImages } from 'html-load-image'
 
-export default defineComponent({
+export default Vue.extend({
   name: 'LoadImage',
   components: {
     LoadFile,
@@ -48,25 +48,17 @@ export default defineComponent({
       default: false,
     },
   },
-  emits: {
-    input: (_v: string | string[]) => undefined,
-    change: (_e: Event) => undefined,
-  },
-  setup(props, { emit }) {
-    const loading = ref(false)
-
-    const change = async (event: Event) => {
-      loading.value = true
-      const input = props.multiple ? await getImages(event) : await getImage(event)
-      emit('input', input)
-      emit('change', event)
-      loading.value = false
-    }
-
-    return {
-      loading,
-      change,
-    }
+  data: () => ({
+    loading: false,
+  }),
+  methods: {
+    async change(event: Event) {
+      this.loading = true
+      const input = this.multiple ? await getImages(event) : await getImage(event)
+      this.$emit('input', input)
+      this.$emit('change', event)
+      this.loading = false
+    },
   },
 })
 </script>

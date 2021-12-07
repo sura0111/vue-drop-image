@@ -15,9 +15,9 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent } from '@vue/composition-api'
+import Vue from 'vue'
 
-export default defineComponent({
+export default Vue.extend({
   name: 'LoadFile',
   props: {
     accept: {
@@ -33,21 +33,12 @@ export default defineComponent({
       default: false,
     },
   },
-  emits: {
-    change: (_e: Event) => undefined,
-  },
-  setup(_, { emit }) {
-    const change = (event: Event) => {
-      emit('change', event)
-    }
-
-    return {
-      change,
-    }
-  },
   methods: {
     click() {
       if (!this.disabled) (this.$refs.fileReader as HTMLElement).click()
+    },
+    change(event: Event) {
+      this.$emit('change', event)
     },
   },
 })

@@ -11,9 +11,9 @@
   </div>
 </template>
 <script lang="ts">
-import { defineComponent, ref } from '@vue/composition-api'
+import Vue from 'vue'
 
-export default defineComponent({
+export default Vue.extend({
   name: 'DropFile',
   props: {
     disabled: {
@@ -21,47 +21,31 @@ export default defineComponent({
       default: false,
     },
   },
-  emits: {
-    doubleClick: () => undefined,
-    dragEnter: () => undefined,
-    dragLeave: () => undefined,
-    drop: (_event: DragEvent) => undefined,
-  },
-  setup(props, { emit }) {
-    const dragging = ref(false)
-
-    const dblclick = () => {
-      emit('doubleClick')
-    }
-
-    const dragEnter = () => {
-      if (!props.disabled) {
-        dragging.value = true
-        emit('dragEnter')
+  data: () => ({
+    dragging: false,
+  }),
+  methods: {
+    dblclick() {
+      this.$emit('doubleClick')
+    },
+    dragEnter() {
+      if (!this.disabled) {
+        this.dragging = true
+        this.$emit('dragEnter')
       }
-    }
-
-    const dragLeave = () => {
-      if (!props.disabled) {
-        dragging.value = false
-        emit('dragLeave')
+    },
+    dragLeave() {
+      if (!this.disabled) {
+        this.dragging = false
+        this.$emit('dragLeave')
       }
-    }
-
-    const drop = (event: DragEvent) => {
-      if (!props.disabled) {
-        dragging.value = false
-        emit('drop', event)
+    },
+    drop(event: DragEvent) {
+      if (!this.disabled) {
+        this.dragging = false
+        this.$emit('drop', event)
       }
-    }
-
-    return {
-      dragging,
-      dblclick,
-      dragEnter,
-      dragLeave,
-      drop,
-    }
+    },
   },
 })
 </script>
