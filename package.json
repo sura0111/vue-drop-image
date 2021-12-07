@@ -8,7 +8,7 @@
     "build:lib": "vue-cli-service build --target lib ./src/components/index.ts",
     "build:type": "tsc -P tsconfig.lib.json",
     "version": "yarn build:lib && yarn build:type && git add -A dist",
-    "postversion": "git push && git push --tags && npm publish"
+    "postversion": "git push && git push --tags"
   },
   "main": "dist/vue-drop-image.common.js",
   "typings": "dist/types/index.d.ts",
