@@ -11,7 +11,7 @@
     "postversion": "git push && git push --tags"
   },
   "main": "dist/vue-drop-image.common.js",
-  "typings": "dist/index.d.ts",
+  "types": "dist/index.d.ts",
   "dependencies": {
     "@vue/composition-api": "^1.4.1",
     "core-js": "^3.6.5",
